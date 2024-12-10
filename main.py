@@ -196,7 +196,7 @@ def salvar_notas(id_nota, nota):
             cursor.close()
         if conn:
             conn.close()
-        st_autorefresh(interval=2000, limit=1, key="logout_refresh")
+
 # Função para exibir formulário de voto
 def exibir_formulario_voto(id_equipe, id_jurado, criterios, participantes, modalidade):
     st.markdown("---")
@@ -223,10 +223,19 @@ def exibir_formulario_voto(id_equipe, id_jurado, criterios, participantes, modal
             if status_nota == 'ok':
                 st.write(f"**{criterio}:** {nota_atual} (já salva)")
             else:
+                # Ajustar o index de acordo com as opções
+                # Suponhamos que as opções sejam [6,7,8,9,10]
+                # Se nota_atual é None, index=0 (começa do 6)
+                # Se nota_atual = 7, index = 1 etc.
+                opcoes_notas = [6,7,8,9,10]
+                if nota_atual in opcoes_notas:
+                    idx = opcoes_notas.index(nota_atual)
+                else:
+                    idx = 0
                 nota_selecionada = st.selectbox(
                     f"{criterio}",
-                    options=[6,7,8,9,10],
-                    index=0 if nota_atual is None else nota_atual - 6,
+                    options=opcoes_notas,
+                    index=idx,
                     key=f"nota_{id_equipe}_{id_nota}"
                 )
                 notas_dict[id_nota] = nota_selecionada
@@ -249,7 +258,8 @@ def exibir_formulario_voto(id_equipe, id_jurado, criterios, participantes, modal
                             sucesso = False
                 if sucesso:
                     st.success("Notas salvas com sucesso!")
-                    st_autorefresh(interval=2000, limit=1, key=f"refresh_{id_equipe}")  # Recarrega após 2 segundos
+                    # Atualiza a página após 2 segundos para refletir as mudanças
+                    st_autorefresh(interval=2000, limit=1, key=f"refresh_{id_equipe}")
                 else:
                     st.error("Ocorreu um erro ao salvar as notas.")
 
