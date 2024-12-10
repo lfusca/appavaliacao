@@ -362,11 +362,11 @@ else:
             modalidade = equipe['modalidade']
             id_modalidade = equipe['modalidade_id']  # Obtém o id_modalidade
             
-            st.markdown("---")
-            st.write(f"### Votação para a Equipe: **{nome_equipe}**")
-            st.write(f"**Modalidade:** {modalidade}")
-            st.write(f"**Grau:** {grau_equipe}")
-            st.write(f"**Ficha Técnica:** {ficha_tecnica}")
+            # st.markdown("---")
+            # st.write(f"### Votação para a Equipe: **{nome_equipe}**")
+            # st.write(f"**Modalidade:** {modalidade}")
+            # st.write(f"**Grau:** {grau_equipe}")
+            # st.write(f"**Ficha Técnica:** {ficha_tecnica}")
             
             # Carregar participantes da equipe
             participantes = carregar_participantes(id_equipe_selecionada)
