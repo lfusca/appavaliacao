@@ -365,8 +365,8 @@ else:
             # st.markdown("---")
             # st.write(f"### Votação para a Equipe: **{nome_equipe}**")
             # st.write(f"**Modalidade:** {modalidade}")
-            # st.write(f"**Grau:** {grau_equipe}")
-            # st.write(f"**Ficha Técnica:** {ficha_tecnica}")
+            st.write(f"**Grau:** {grau_equipe}")
+            st.write(f"**Ficha Técnica:** {ficha_tecnica}")
             
             # Carregar participantes da equipe
             participantes = carregar_participantes(id_equipe_selecionada)
