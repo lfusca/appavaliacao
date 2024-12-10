@@ -227,7 +227,7 @@ def exibir_formulario_voto(id_equipe, id_jurado, criterios, participantes, modal
                 # Suponhamos que as opções sejam [6,7,8,9,10]
                 # Se nota_atual é None, index=0 (começa do 6)
                 # Se nota_atual = 7, index = 1 etc.
-                opcoes_notas = [6,7,8,9,10]
+                opcoes_notas = [7,8,9,9.1,9.2,9.3,9.4,9.5,9.6,9.7,9.8,9.9,10]
                 if nota_atual in opcoes_notas:
                     idx = opcoes_notas.index(nota_atual)
                 else:
