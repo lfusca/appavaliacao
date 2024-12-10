@@ -199,10 +199,10 @@ def salvar_notas(id_nota, nota):
 
 # Função para exibir formulário de voto
 def exibir_formulario_voto(id_equipe, id_jurado, criterios, participantes, modalidade):
-    st.markdown("---")
-    st.write(f"### Votação para a Equipe: **{participantes[0] if participantes else 'Sem Participantes'}**")
-    st.write(f"**Modalidade:** {modalidade}")
-    st.write(f"**Participantes:** " + ", ".join(participantes))
+    # st.markdown("---")
+    # st.write(f"### Votação para a Equipe: **{participantes[0] if participantes else 'Sem Participantes'}**")
+    # st.write(f"**Modalidade:** {modalidade}")
+    # st.write(f"**Participantes:** " + ", ".join(participantes))
     
     # Carregar notas existentes
     df_notas = carregar_notas_jurado(id_equipe, id_jurado)
@@ -362,9 +362,9 @@ else:
             modalidade = equipe['modalidade']
             id_modalidade = equipe['modalidade_id']  # Obtém o id_modalidade
             
-            # st.markdown("---")
-            # st.write(f"### Votação para a Equipe: **{nome_equipe}**")
-            # st.write(f"**Modalidade:** {modalidade}")
+            st.markdown("---")
+            st.write(f"### Votação para a Equipe: **{nome_equipe}**")
+            st.write(f"**Modalidade:** {modalidade}")
             st.write(f"**Grau:** {grau_equipe}")
             st.write(f"**Ficha Técnica:** {ficha_tecnica}")
             
