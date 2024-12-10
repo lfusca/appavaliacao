@@ -214,6 +214,9 @@ def exibir_formulario_voto(id_equipe, id_jurado, criterios, participantes, modal
     with st.form(f"form_notas_{id_equipe}"):
         notas_dict = {}
         
+        # Inclui a opção "Selecione..." no início da lista de notas
+        opcoes_notas = ["Selecione...",7,8,9,9.1,9.2,9.3,9.4,9.5,9.6,9.7,9.8,9.9,10]
+        
         for index, row in df_notas.iterrows():
             id_nota = row['id_nota']
             criterio = row['criterio']
@@ -223,30 +226,31 @@ def exibir_formulario_voto(id_equipe, id_jurado, criterios, participantes, modal
             if status_nota == 'ok':
                 st.write(f"**{criterio}:** {nota_atual} (já salva)")
             else:
-                # Ajustar o index de acordo com as opções
-                # Suponhamos que as opções sejam [6,7,8,9,10]
-                # Se nota_atual é None, index=0 (começa do 6)
-                # Se nota_atual = 7, index = 1 etc.
-                opcoes_notas = [7,8,9,9.1,9.2,9.3,9.4,9.5,9.6,9.7,9.8,9.9,10]
+                # Se nota_atual não está na lista, selecionamos a opção "Selecione..."
                 if nota_atual in opcoes_notas:
                     idx = opcoes_notas.index(nota_atual)
                 else:
-                    idx = 0
+                    idx = 0  # Começa em "Selecione..."
+                
                 nota_selecionada = st.selectbox(
                     f"{criterio}",
                     options=opcoes_notas,
                     index=idx,
                     key=f"nota_{id_equipe}_{id_nota}"
                 )
-                notas_dict[id_nota] = nota_selecionada
+                
+                # Se o usuário não alterar, ficará como "Selecione...", que será tratada como None
+                notas_dict[id_nota] = nota_selecionada if nota_selecionada != "Selecione..." else None
         
         submit_notas = st.form_submit_button("Salvar Notas")
         
         if submit_notas:
-            # Verificar se todas as notas foram preenchidas
+            # Verificar se todas as notas foram preenchidas (None significa não selecionado)
             notas_faltantes = df_notas[df_notas['status'] != 'ok']['id_nota'].tolist()
-            notas_preenchidas = notas_dict.keys()
-            if not all(id_nota in notas_preenchidas for id_nota in notas_faltantes):
+            # Checa se todas as notas necessárias foram preenchidas (não None)
+            todas_preenchidas = all(id_nota in notas_dict and notas_dict[id_nota] is not None for id_nota in notas_faltantes)
+            
+            if not todas_preenchidas:
                 st.warning("Por favor, preencha todas as notas antes de salvar.")
             else:
                 # Salvar as notas no banco de dados
@@ -263,7 +267,7 @@ def exibir_formulario_voto(id_equipe, id_jurado, criterios, participantes, modal
                 else:
                     st.error("Ocorreu um erro ao salvar as notas.")
 
-# Função para registrar jurado (apenas para fins de teste, deve ser removida ou protegida na produção)
+# Função para registrar jurado (apenas para fins de teste)
 def registrar_jurado(nome, login, senha):
     try:
         conn = psycopg2.connect(DB_URL)
@@ -329,7 +333,7 @@ if st.session_state['jurado_id'] is None:
                     st_autorefresh(interval=2000, limit=1, key="login_refresh")  # Recarrega após 2 segundos
                 else:
                     st.error("Credenciais inválidas. Por favor, tente novamente.")
-    # Apenas para fins de teste, descomente a linha abaixo para acessar a interface de registro de jurados
+    # Se quiser habilitar o registro de jurados para testes, descomente:
     # registrar_jurado_interface()
 else:
     # Usuário está logado
